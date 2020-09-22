@@ -22,7 +22,7 @@ uint8_t gesto_begin()
     // Modo Gaming (mais rápido)
     paj7620SelectBank(BANK1); 
     delay(1);
-    paj7620WriteReg(0x65, 0xB7); // Modo longa distância (0x12 e 0xB7)
+    paj7620WriteReg(0x65, 0xB7); // Altera o tempo de IDLE
     delay(1);
     paj7620SelectBank(BANK0);
   }
