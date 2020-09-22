@@ -17,6 +17,15 @@ uint8_t gesto_begin()
   {
     Serial.println("Erro na inicialização do sensor");
   }
+  else
+  {
+    // Modo Gaming (mais rápido)
+    paj7620SelectBank(BANK1); 
+    delay(1);
+    paj7620WriteReg(0x65, 0xB7); // Modo longa distância (0x12 e 0xB7)
+    delay(1);
+    paj7620SelectBank(BANK0);
+  }
 
   return !error;
 }
@@ -45,32 +54,116 @@ uint8_t gesto_get_status()
     switch (data)
     {
       case GES_RIGHT_FLAG:
-        return 1;
+        delay(GES_ENTRY_TIME);
+        paj7620ReadReg(0x43, 1, &data);
+
+        // Frente
+        if(data == GES_FORWARD_FLAG) 
+        {
+          return 3;
+          //delay(GES_QUIT_TIME);
+        }
+        // Trás
+        else if(data == GES_BACKWARD_FLAG) 
+        {
+          return 4;
+          //delay(GES_QUIT_TIME);
+        }
+        // Direita
+        else
+        {
+          return 1;
+        }          
+        break;
         
       case GES_LEFT_FLAG:
-        return 2;
+        delay(GES_ENTRY_TIME);
+        paj7620ReadReg(0x43, 1, &data);
+
+        // Frente
+        if(data == GES_FORWARD_FLAG) 
+        {
+          return 3;
+          //delay(GES_QUIT_TIME);
+        }
+        // Trás
+        else if(data == GES_BACKWARD_FLAG) 
+        {
+          return 4;
+          //delay(GES_QUIT_TIME);
+        }
+        // Esquerda
+        else
+        {
+          return 2;
+        }          
+        break;
         
       case GES_UP_FLAG:
-        return 5;
+        delay(GES_ENTRY_TIME);
+        paj7620ReadReg(0x43, 1, &data);
 
+        // Frente
+        if(data == GES_FORWARD_FLAG) 
+        {
+          return 3;
+          //delay(GES_QUIT_TIME);
+        }
+        // Trás
+        else if(data == GES_BACKWARD_FLAG) 
+        {
+          return 4;
+          //delay(GES_QUIT_TIME);
+        }
+        // Cima
+        else
+        {
+          return 5;
+        }          
+        break;
       case GES_DOWN_FLAG:
-        return 6;
+        delay(GES_ENTRY_TIME);
+        paj7620ReadReg(0x43, 1, &data);
+
+        // Frente
+        if(data == GES_FORWARD_FLAG) 
+        {
+          return 3;
+          //delay(GES_QUIT_TIME);
+        }
+        // Trás
+        else if(data == GES_BACKWARD_FLAG) 
+        {
+          return 4;
+          //delay(GES_QUIT_TIME);
+        }
+        else
+        {
+          return 6;
+        }          
+        break;
         
       case GES_FORWARD_FLAG:
         // Frente
         return 3;
+        //delay(GES_QUIT_TIME);
+        break;
         
       case GES_BACKWARD_FLAG:   
         // Trás  
         return 4;
+        //delay(GES_QUIT_TIME);
+        break;
         
       case GES_CLOCKWISE_FLAG:
         // Horário
         return 7;
+        break;
         
       case GES_COUNT_CLOCKWISE_FLAG:
         // Anti-horário
         return 8;
+        break;
         
       default:
         paj7620ReadReg(0x44, 1, &data1);
