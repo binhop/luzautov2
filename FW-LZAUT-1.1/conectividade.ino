@@ -16,11 +16,11 @@ void wifi_begin()
   // O sinal do Wi-fi no ponto de instalação é cerca de -80dBm
   // portanto, o único modo que consegue ler esse sinal é o b
   // O padrão é o modo 802.11n
-  WiFi.setPhyMode(WIFI_PHY_MODE_11B);
+  //WiFi.setPhyMode(WIFI_PHY_MODE_11B);
 
   // Mantem o Wifi do ESP8266 acordado para não ter atraso
   // significativo na resposta do Webserver
-  WiFi.setSleepMode(WIFI_NONE_SLEEP);
+  //WiFi.setSleepMode(WIFI_NONE_SLEEP);
   
   WiFi.mode(WIFI_STA);
   WiFi.begin(NW_NAME, NW_PASSWORD);
